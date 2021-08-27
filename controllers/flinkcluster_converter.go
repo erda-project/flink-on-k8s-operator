@@ -956,6 +956,7 @@ func convertResourceMemoryToInt64(memory resource.Quantity, divisor resource.Qua
 // Calculate heap size in MB
 func calHeapSize(memSize int64, offHeapMin int64, offHeapRatio int64) int64 {
 	var heapSizeMB int64
+
 	offHeapSize := int64(math.Ceil(float64(memSize*offHeapRatio) / 100))
 	if offHeapSize < offHeapMin {
 		offHeapSize = offHeapMin
@@ -972,6 +973,7 @@ func calHeapSize(memSize int64, offHeapMin int64, offHeapRatio int64) int64 {
 func convertFlinkConfig(clusterName string) (*corev1.Volume, *corev1.VolumeMount) {
 	var confVol *corev1.Volume
 	var confMount *corev1.VolumeMount
+
 	confVol = &corev1.Volume{
 		Name: flinkConfigMapVolume,
 		VolumeSource: corev1.VolumeSource{
@@ -992,6 +994,7 @@ func convertFlinkConfig(clusterName string) (*corev1.Volume, *corev1.VolumeMount
 func convertSubmitJobScript(clusterName string) (*corev1.Volume, *corev1.VolumeMount) {
 	var confVol *corev1.Volume
 	var confMount *corev1.VolumeMount
+
 	confVol = &corev1.Volume{
 		Name: flinkConfigMapVolume,
 		VolumeSource: corev1.VolumeSource{
@@ -1012,6 +1015,7 @@ func convertSubmitJobScript(clusterName string) (*corev1.Volume, *corev1.VolumeM
 
 func convertHadoopConfig(hadoopConfig *v1beta1.HadoopConfig) (
 	*corev1.Volume, *corev1.VolumeMount, *corev1.EnvVar) {
+
 	if hadoopConfig == nil {
 		return nil, nil, nil
 	}
