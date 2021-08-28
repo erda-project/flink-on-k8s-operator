@@ -68,12 +68,12 @@ func getDesiredClusterState(
 		return model.DesiredClusterState{}
 	}
 	return model.DesiredClusterState{
-		ConfigMap:    getDesiredConfigMap(cluster),
+		ConfigMap:     getDesiredConfigMap(cluster),
 		JmStatefulSet: getDesiredJobManagerStatefulSet(cluster),
-		JmService:    getDesiredJobManagerService(cluster),
-		JmIngress:    getDesiredJobManagerIngress(cluster),
+		JmService:     getDesiredJobManagerService(cluster),
+		JmIngress:     getDesiredJobManagerIngress(cluster),
 		TmStatefulSet: getDesiredTaskManagerStatefulSet(cluster),
-		Job:          getDesiredJob(observed),
+		Job:           getDesiredJob(observed),
 	}
 }
 
@@ -133,6 +133,12 @@ func getDesiredJobManagerStatefulSet(
 				},
 			},
 		},
+	}
+	for k, v := range podLabels {
+		envVars = append(envVars, corev1.EnvVar{
+			Name:  k,
+			Value: v,
+		})
 	}
 	var readinessProbe = corev1.Probe{
 		Handler: corev1.Handler{
@@ -217,9 +223,9 @@ func getDesiredJobManagerStatefulSet(
 			Labels:          statefulSetLabels,
 		},
 		Spec: appsv1.StatefulSetSpec{
-			Replicas: jobManagerSpec.Replicas,
-			Selector: &metav1.LabelSelector{MatchLabels: podLabels},
-			ServiceName: jobManagerStatefulSetName,
+			Replicas:             jobManagerSpec.Replicas,
+			Selector:             &metav1.LabelSelector{MatchLabels: podLabels},
+			ServiceName:          jobManagerStatefulSetName,
 			VolumeClaimTemplates: jobManagerSpec.VolumeClaimTemplates,
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
@@ -435,6 +441,12 @@ func getDesiredTaskManagerStatefulSet(
 			},
 		},
 	}
+	for k, v := range podLabels {
+		envVars = append(envVars, corev1.EnvVar{
+			Name:  k,
+			Value: v,
+		})
+	}
 	var readinessProbe = corev1.Probe{
 		Handler: corev1.Handler{
 			TCPSocket: &corev1.TCPSocketAction{
@@ -516,11 +528,11 @@ func getDesiredTaskManagerStatefulSet(
 			Labels: statefulSetLabels,
 		},
 		Spec: appsv1.StatefulSetSpec{
-			Replicas: &taskManagerSpec.Replicas,
-			Selector: &metav1.LabelSelector{MatchLabels: podLabels},
-			ServiceName: taskManagerStatefulSetName,
+			Replicas:             &taskManagerSpec.Replicas,
+			Selector:             &metav1.LabelSelector{MatchLabels: podLabels},
+			ServiceName:          taskManagerStatefulSetName,
 			VolumeClaimTemplates: taskManagerSpec.VolumeClaimTemplates,
-			PodManagementPolicy: "Parallel",
+			PodManagementPolicy:  "Parallel",
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels:      podLabels,
@@ -650,6 +662,12 @@ func getDesiredJob(observed *ObservedClusterState) *batchv1.Job {
 	var securityContext = jobSpec.SecurityContext
 
 	var envVars []corev1.EnvVar
+	for k, v := range podLabels {
+		envVars = append(envVars, corev1.EnvVar{
+			Name:  k,
+			Value: v,
+		})
+	}
 
 	// If the JAR file is remote, put the URI in the env variable
 	// FLINK_JOB_JAR_URI and rewrite the JAR path to a local path. The entrypoint
