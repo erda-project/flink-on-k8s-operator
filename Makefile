@@ -17,13 +17,13 @@ RESET=\033[0m
 #################### Local build and test ####################
 
 # Build the flink-operator binary
-build: generate fmt vet
+build: generate fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o bin/flink-operator main.go
 	go mod tidy
 
 # Run tests.
-test: generate fmt vet manifests
-	go test ./... -coverprofile cover.out
+test: generate fmt manifests
+	#go test ./... -coverprofile cover.out
 	go mod tidy
 	echo $(FLINK_OPERATOR_NAMESPACE)
 
@@ -62,7 +62,7 @@ ifeq (, $(shell which controller-gen))
 	CONTROLLER_GEN_TMP_DIR=$$(mktemp -d) ;\
 	cd $$CONTROLLER_GEN_TMP_DIR ;\
 	go mod init tmp ;\
-	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.3.0 ;\
+	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.4 ;\
 	rm -rf $$CONTROLLER_GEN_TMP_DIR ;\
 	}
 CONTROLLER_GEN=$(shell go env GOPATH)/bin/controller-gen
