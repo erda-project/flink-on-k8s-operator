@@ -38,6 +38,7 @@ FlinkCluster
         |__ volumeClaimTemplates
         |__ initContainers
         |__ nodeSelector
+        |__ affinity
         |__ tolerations
         |__ sidecars
         |__ podAnnotations
@@ -58,6 +59,7 @@ FlinkCluster
         |__ volumeClaimTemplates
         |__ initContainers
         |__ nodeSelector
+        |__ affinity
         |__ tolerations
         |__ sidecars
         |__ podAnnotations
@@ -86,6 +88,7 @@ FlinkCluster
         |__ cancelRequested
         |__ podAnnotations
         |__ podLabels
+        |__ affinity
         |__ securityContext
     |__ envVars
     |__ envFrom
@@ -199,6 +202,8 @@ FlinkCluster
       * **nodeSelector** (optional): Selector which must match a node's labels for the JobManager pod
         to be scheduled on that node.
         See [more info](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
+      * **affinity** (optional): Allows the Job manager pod to set node affinity & inter-pod affinity & anti-affinity in the cluster.
+        See [more info](hhttps://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
       * **tolerations** (optional): Allows the JobManager pod to run on a tainted node
         in the cluster.
         See [more info](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
@@ -240,6 +245,8 @@ FlinkCluster
         See [more info](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) about init containers.
       * **nodeSelector** (optional): Selector which must match a node's labels for the TaskManager pod to
         be scheduled on that node.
+      * **affinity** (optional): Allows the task manager pod to set node affinity & inter-pod affinity & anti-affinity in the cluster.
+        See [more info](hhttps://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
         See [more info](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
       * **tolerations** (optional): Allows the TaskManager pod to run on a tainted node
         in the cluster.
@@ -293,6 +300,8 @@ FlinkCluster
       * **podAnnotations** (optional): Pod template annotations for the job.
         See [more info](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) about annotations.
       * **podLabels** (optional): Pod template labels for the job.
+      * **affinity** (optional): Allows the Job pod to set node affinity & inter-pod affinity & anti-affinity in the cluster.
+        See [more info](hhttps://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
       * **securityContext** (optional): PodSecurityContext for the Job pod. 
             See [more info](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod).
     * **envVars** (optional): Environment variables shared by all JobManager, TaskManager and job containers.

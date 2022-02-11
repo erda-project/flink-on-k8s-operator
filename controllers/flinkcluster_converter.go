@@ -212,6 +212,7 @@ func getDesiredJobManagerStatefulSet(
 		Tolerations:        jobManagerSpec.Tolerations,
 		ImagePullSecrets:   imageSpec.PullSecrets,
 		SecurityContext:    securityContext,
+		Affinity:           jobManagerSpec.Affinity,
 		ServiceAccountName: getServiceAccountName(serviceAccount),
 	}
 
@@ -515,6 +516,7 @@ func getDesiredTaskManagerStatefulSet(
 		Volumes:            volumes,
 		NodeSelector:       taskManagerSpec.NodeSelector,
 		Tolerations:        taskManagerSpec.Tolerations,
+		Affinity:           taskManagerSpec.Affinity,
 		ImagePullSecrets:   imageSpec.PullSecrets,
 		SecurityContext:    securityContext,
 		ServiceAccountName: getServiceAccountName(serviceAccount),
@@ -744,6 +746,7 @@ func getDesiredJob(observed *ObservedClusterState) *batchv1.Job {
 		},
 		RestartPolicy:      corev1.RestartPolicyNever,
 		Volumes:            volumes,
+		Affinity:           jobSpec.Affinity,
 		ImagePullSecrets:   imageSpec.PullSecrets,
 		SecurityContext:    securityContext,
 		ServiceAccountName: getServiceAccountName(serviceAccount),

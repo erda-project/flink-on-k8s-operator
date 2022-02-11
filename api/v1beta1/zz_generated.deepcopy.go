@@ -522,6 +522,11 @@ func (in *JobManagerSpec) DeepCopyInto(out *JobManagerSpec) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Affinity != nil {
+		in, out := &in.Affinity, &out.Affinity
+		*out = new(v1.Affinity)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Sidecars != nil {
 		in, out := &in.Sidecars, &out.Sidecars
 		*out = make([]v1.Container, len(*in))
@@ -657,6 +662,11 @@ func (in *JobSpec) DeepCopyInto(out *JobSpec) {
 		for key, val := range *in {
 			(*out)[key] = val
 		}
+	}
+	if in.Affinity != nil {
+		in, out := &in.Affinity, &out.Affinity
+		*out = new(v1.Affinity)
+		(*in).DeepCopyInto(*out)
 	}
 	in.Resources.DeepCopyInto(&out.Resources)
 	if in.SecurityContext != nil {
@@ -801,6 +811,11 @@ func (in *TaskManagerSpec) DeepCopyInto(out *TaskManagerSpec) {
 		for key, val := range *in {
 			(*out)[key] = val
 		}
+	}
+	if in.Affinity != nil {
+		in, out := &in.Affinity, &out.Affinity
+		*out = new(v1.Affinity)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Tolerations != nil {
 		in, out := &in.Tolerations, &out.Tolerations
