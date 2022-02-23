@@ -699,6 +699,7 @@ func (updater *ClusterStatusUpdater) getJobStatus() *v1beta1.JobStatus {
 	var observedSavepoint = updater.observed.savepoint
 	var recordedJobStatus = updater.observed.cluster.Status.Components.Job
 	var newJobStatus *v1beta1.JobStatus
+	var observedJobPod = updater.observed.jobPod
 
 	if recordedJobStatus == nil {
 		return nil
@@ -734,7 +735,13 @@ func (updater *ClusterStatusUpdater) getJobStatus() *v1beta1.JobStatus {
 			var jobSubmitInProgress = observedJob != nil &&
 				observedJob.Status.Succeeded == 0 &&
 				observedJob.Status.Failed == 0
-			if jobSubmitSucceeded || jobSubmitInProgress {
+			// Usually judging the observedJob is enough
+			// But We found there is a strange situation: Job Completed but Pod is still Running.
+			// So we add logic below to avoid this issue.
+			var jobPodRunning = observedJobPod != nil &&
+				len(observedJobPod.Status.ContainerStatuses) > 0 &&
+				observedJobPod.Status.ContainerStatuses[0].State.Running != nil
+			if jobSubmitSucceeded || jobSubmitInProgress || jobPodRunning {
 				jobState = v1beta1.JobStatePending
 				break
 			}
