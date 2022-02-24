@@ -101,7 +101,7 @@ function submit_job() {
 
     # On success, write job ID and log.
     echo "jobID: ${job_id}" >"${TERM_LOG}"
-    format_log_message "Successfully submitted!" "submit_log" >>"${TERM_LOG}"
+    format_log_message "Successfully submitted!" "${TERM_LOG}"
 
     return 0
 }
