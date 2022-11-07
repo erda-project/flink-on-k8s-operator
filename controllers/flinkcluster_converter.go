@@ -634,7 +634,7 @@ func getDesiredJob(observed *ObservedClusterState) *batchv1.Job {
 	var jobManagerAddress = fmt.Sprintf(
 		"%s:%d", jobManagerServiceName, *jobManagerSpec.Ports.UI)
 	var podLabels = getClusterLabels(*flinkCluster)
-	podLabels = mergeLabels(podLabels, jobManagerSpec.PodLabels)
+	podLabels = mergeLabels(podLabels, jobSpec.PodLabels)
 	var jobLabels = mergeLabels(podLabels, getRevisionHashLabels(flinkCluster.Status))
 	var jobArgs = []string{"bash", "/opt/flink-operator/submit-job.sh"}
 	jobArgs = append(jobArgs, "--jobmanager", jobManagerAddress)
